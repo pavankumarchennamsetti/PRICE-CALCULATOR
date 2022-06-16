@@ -1,0 +1,171 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      .main {
+        display: flex;
+        justify-content: space-around;
+        background-color: azure;
+        padding: 2rem;
+      }
+      .calc {
+        border: 2px rgb(231, 21, 133) dotted;
+        background-color: rgb(128, 182, 180);
+        padding: 1rem;
+      }
+      .entry {
+        border: 2px rgb(52, 115, 231) dotted;
+        padding: 1rem;
+        background-color: rgb(236, 160, 132);
+      }
+      button {
+        background-color: steelblue;
+        color: snow;
+        padding: 0.5rem;
+        border: 1px solid royalblue;
+        border-radius: 5px;
+      }
+      button:hover {
+        cursor: pointer;
+        color: rgb(191, 86, 86);
+        background-color: rgb(153, 151, 228);
+      }
+      td,
+      th {
+        text-align: center;
+        padding: 0 1rem 0 1rem;
+      }
+      th {
+        color: rgb(25, 10, 243);
+      }
+      #he {
+        color: slateblue !important;
+      }
+      @media (max-width: 500px) {
+        .main {
+          display: block;
+          background-color: azure;
+          padding: 2rem;
+        }
+        .entry {
+          border: 2px rgb(52, 115, 231) dotted;
+          padding: 1rem;
+          background-color: rgb(236, 160, 132);
+          margin-bottom: 1rem;
+        }
+        td,
+        th {
+          text-align: center;
+          font-size: 10px;
+        }
+        h2 {
+          font-size: 15px;
+          margin-bottom: 2px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1
+      style="
+        text-align: center;
+        background-color: rgb(201, 232, 232);
+        padding: 2rem 0;
+        color: rgb(12, 127, 221);
+      "
+    >
+      STORE CALCULATOR
+    </h1>
+    <div class="main">
+      <div class="entry">
+        <h2>ENTER THE FOLLOWING:</h2>
+        <label for="name">NAME OF THE PRODUCT:</label><br />
+        <input type="text" required id="name" name="name" /><br /><br />
+        <label for="price">PRICE:</label><br />
+        <input type="number" required id="price" name="price" /><br /><br />
+        <label for="units">NO. OF UNITS:</label><br />
+        <input type="units" required id="units" name="units" /><br /><br />
+        <button type="submit" onclick="add()">ENTER</button>
+      </div>
+      <div class="calc">
+        <h2 style="text-align: center">PRICE TABLE</h2>
+        <table border="1" id="productTable">
+          <thead>
+            <tr>
+              <th id="he">NAME OF THE PRODUCT</th>
+              <th id="he">PRICE</th>
+              <th id="he">NO. OF UNITS</th>
+              <th id="he">TOTAL</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  var products = [];
+  function add() {
+    var name = document.getElementById("name").value;
+    var price = document.getElementById("price").value;
+    var units = document.getElementById("units").value;
+    var tempProducts = {
+      name: name,
+      price: price,
+      units: units,
+    };
+    products.push(tempProducts);
+    document.getElementById("name").value = "";
+    document.getElementById("price").value = "";
+    document.getElementById("units").value = "";
+    show();
+  }
+  function show() {
+    var productTable = document.getElementById("productTable");
+    var rowCount = productTable.rows.length;
+    //remove old rows
+    if (rowCount > 1) {
+      for (var i = rowCount - 1; i > 0; i--) {
+        productTable.deleteRow(i);
+      }
+    }
+    var grandTotal = 0;
+    products.forEach((temp) => {
+      var row = document.createElement("tr");
+      var tdName = document.createElement("th");
+      var tdPrice = document.createElement("td");
+      var tdUnits = document.createElement("td");
+      var tdTotal = document.createElement("td");
+      tdName.innerHTML = temp.name;
+      tdPrice.innerHTML = temp.price;
+      tdUnits.innerHTML = temp.units;
+      tdTotal.innerHTML = temp.price * temp.units;
+      row.appendChild(tdName);
+      row.appendChild(tdPrice);
+      row.appendChild(tdUnits);
+      row.appendChild(tdTotal);
+      productTable.appendChild(row);
+      grandTotal = grandTotal + temp.price * temp.units;
+    });
+    var r = document.createElement("tr");
+    var g = document.createElement("th");
+    var h = document.createElement("th");
+    var i = document.createElement("th");
+    var t = document.createElement("th");
+    g.innerHTML = "GRAND TOTAL";
+    t.innerHTML = parseInt(grandTotal);
+    r.appendChild(g);
+    r.appendChild(h);
+    r.appendChild(i);
+    r.appendChild(t);
+    productTable.appendChild(r);
+  }
+</script>
